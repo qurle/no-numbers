@@ -1,0 +1,14 @@
+{
+  "name": "No-Numbers",
+  "version": "1.0.0",
+  "description": "Make it just rectangle",
+  "main": "code.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "author": "Nick Qurle",
+  "license": "",
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.33.0"
+  }
+}
