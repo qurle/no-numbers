@@ -11,7 +11,7 @@ Alternatively, you can select some layers. The plugin will rename them and their
 
 ## **How it works**
 
-It turns default layer names like _Rectangle 420_ or _Frame 69 _to simple _Rectangle _or _Frame_. It will beautify layers mess and help to keep your files clean and pretty.
+It turns default layer names like _Rectangle 420_ or _Frame 69_ to simple _Rectangle_ or _Frame_. It will beautify layers mess and help to keep your files clean and pretty.
 
 The plugin won't affect any other layer names. It works with frames, groups, slices and any vector objects as well.
 
