@@ -3,6 +3,13 @@
   "id": "1017928273649269221",
   "api": "1.0.0",
   "main": "code.js",
+  "relaunchButtons": [
+    {
+      "command": "relaunch",
+      "name": "Remove the numbers",
+      "multipleSelection": true
+    }
+  ],
   "editorType": [
     "figma"
   ]
