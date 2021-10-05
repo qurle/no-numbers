@@ -56,10 +56,9 @@ function finish() {
     figma.root.setRelaunchData({ relaunch: '' });
     // Notification
     if (count > 0) {
-        confirmMsgs.push("Renamed " + count + "layers in total");
         notify(confirmMsgs[Math.floor(Math.random() * confirmMsgs.length)] +
             " " + renameMsgs[Math.floor(Math.random() * renameMsgs.length)] +
-            " " + (count === 1) ? "only one layer" : (count + " layers"));
+            " " + ((count === 1) ? "only one layer" : (count + " layers")));
     }
     else
         notify(idleMsgs[Math.floor(Math.random() * idleMsgs.length)]);
