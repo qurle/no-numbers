@@ -17,7 +17,7 @@ const dict = [
     "Vector",
     "Component"
 ];
-const regex = /^\D\w+(?= \d+)|\d+/g;
+const regex = /^\D\w+(?= \d+)/g;
 // Variables
 let notification;
 let selection;
@@ -38,7 +38,7 @@ finish();
 function recursiveRename(node) {
     if (node.type !== "PAGE") {
         const match = node.name.match(regex);
-        const index = (match && match.length === 2) ? dict.indexOf(match[0]) : -1;
+        const index = (match && match.length > 0) ? dict.indexOf(match[0]) : -1;
         if (index >= 0) {
             count++;
             node.name = dict[index];
@@ -58,7 +58,7 @@ function finish() {
         notify(confirmMsgs[Math.floor(Math.random() * confirmMsgs.length)] +
             " " + renameMsgs[Math.floor(Math.random() * renameMsgs.length)] +
             " " + ((count === 1) ? "only one layer" : (count + " layers")));
-        console.log("Renamed " + count + " layers in " + (Date.now() - start) / 1000 + "seconds");
+        console.log("Renamed " + count + " layers in " + (Date.now() - start) / 1000 + " seconds");
     }
     else
         notify(idleMsgs[Math.floor(Math.random() * idleMsgs.length)]);
