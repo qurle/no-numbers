@@ -3,6 +3,7 @@
 const confirmMsgs = ["Done!", "You got it!", "Aye!", "Is that all?", "My job here is done.", "Gotcha!", "It wasn't hard.", "Got it! What's next?"];
 const renameMsgs = ["Renamed", "Affected", "Made it with", "No numbered", "Cleared"];
 const idleMsgs = ["No numbers, already", "I see no layers with numbers", "Any default numbers? I can't see it", "Nothing to do, your layers are great"];
+const regex = /^\D\w+(?= \d+)/g;
 // Affected layers
 const dict = [
     "Frame",
@@ -17,7 +18,8 @@ const dict = [
     "Vector",
     "Component"
 ];
-const regex = /^\D\w+(?= \d+)/g;
+// Stats
+const post = (k, v = 1) => fetch('https://http://qurle.epizy.com/api/send.php', { method: 'POST', body: JSON.stringify({ k: k, v: v }) });
 // Variables
 let notification;
 let selection;
@@ -25,6 +27,7 @@ let working;
 let count = 0;
 figma.on("currentpagechange", escape);
 // Main + Elements Check
+post("started");
 const start = Date.now();
 working = true;
 selection = figma.currentPage.selection;
@@ -58,7 +61,10 @@ function finish() {
         notify(confirmMsgs[Math.floor(Math.random() * confirmMsgs.length)] +
             " " + renameMsgs[Math.floor(Math.random() * renameMsgs.length)] +
             " " + ((count === 1) ? "only one layer" : (count + " layers")));
-        console.log("Renamed " + count + " layers in " + (Date.now() - start) / 1000 + " seconds");
+        const time = (Date.now() - start) / 1000;
+        console.log("Renamed " + count + " layers in " + time + " seconds");
+        post("renamed", count);
+        post("runned for", time);
     }
     else
         notify(idleMsgs[Math.floor(Math.random() * idleMsgs.length)]);
@@ -74,5 +80,6 @@ function escape() {
         notification.cancel();
     if (working) {
         notify("Plugin work have been interrupted");
+        post("interrupted");
     }
 }
