@@ -18,7 +18,8 @@ const dict = [
   "Vector",
   "Component"
 ]
-const regex = /^\w+(?= \d+)|\d+$/gm
+
+const regex = /^\D\w+(?= \d+)|\d+/g
 
 // Variables
 let notification: NotificationHandler
@@ -29,7 +30,7 @@ let count: number = 0
 figma.on("currentpagechange", escape)
 
 // Main + Elements Check
-const nodes: SceneNode[] = [];
+const start = Date.now()
 working = true
 selection = figma.currentPage.selection
 console.log(selection.length + " selected")
@@ -66,6 +67,8 @@ function finish() {
     notify(confirmMsgs[Math.floor(Math.random() * confirmMsgs.length)] +
       " " + renameMsgs[Math.floor(Math.random() * renameMsgs.length)] +
       " " + ((count === 1) ? "only one layer" : (count + " layers")))
+
+    console.log("Renamed " + count + " layers in " + (Date.now() - start) / 1000 + "seconds")
   }
   else notify(idleMsgs[Math.floor(Math.random() * idleMsgs.length)])
   figma.closePlugin()
