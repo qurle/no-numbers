@@ -43,7 +43,6 @@ else
 finish()
 
 function recursiveRename(node) {
-  console.log("Current node: " + node.name)
   if (node.type !== "PAGE") {
     const match = node.name.match(regex)
     const index = (match && match.length === 2) ? dict.indexOf(match[0]) : -1
