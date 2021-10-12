@@ -17,7 +17,7 @@ const dict = [
     "Vector",
     "Component"
 ];
-const regex = /^\D\w+(?= \d+)|\d+/g;
+const regex = /^Frame|Group|Slice|Rectangle|Line|Arrow|Ellipse|Polygon|Star|Vector|Component(?= \d+)/g;
 // Variables
 let notification;
 let selection;
@@ -38,10 +38,9 @@ finish();
 function recursiveRename(node) {
     if (node.type !== "PAGE") {
         const match = node.name.match(regex);
-        const index = (match && match.length === 2) ? dict.indexOf(match[0]) : -1;
-        if (index >= 0) {
+        if (match && match.length > 0) {
             count++;
-            node.name = dict[index];
+            node.name = match[0];
         }
     }
     if ("children" in node) {
