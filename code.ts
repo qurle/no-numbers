@@ -4,6 +4,7 @@
 const confirmMsgs = ["Done!", "You got it!", "Aye!", "Is that all?", "My job here is done.", "Gotcha!", "It wasn't hard.", "Got it! What's next?"]
 const renameMsgs = ["Renamed", "Affected", "Made it with", "No numbered", "Cleared"]
 const idleMsgs = ["No numbers, already", "I see no layers with numbers", "Any default numbers? I can't see it", "Nothing to do, your layers are great"]
+const regex = /^\D\w+(?= \d+)/g
 // Affected layers
 const dict = [
   "Frame",
@@ -19,7 +20,7 @@ const dict = [
   "Component"
 ]
 
-const regex = /^\D\w+(?= \d+)/g
+// Stats
 
 // Variables
 let notification: NotificationHandler
@@ -27,9 +28,20 @@ let selection: ReadonlyArray<SceneNode>
 let working: boolean
 let count: number = 0
 
-figma.on("currentpagechange", escape)
+figma.on("currentpagechange", escape);
 
+// For networking purposes
+figma.showUI(__html__, { visible: false })
+const post = (k, v = 1, last = false) => figma.ui.postMessage({ k: k, v: v, last: last })
+figma.ui.onmessage = async (msg) => {
+  if (msg === "finished")
+    // Real plugin finish (after server's last response)
+    figma.closePlugin()
+  else
+    console.log(msg)
+}
 // Main + Elements Check
+post("started")
 const start = Date.now()
 working = true
 selection = figma.currentPage.selection
@@ -40,7 +52,6 @@ if (selection.length)
     recursiveRename(node)
 else
   recursiveRename(figma.currentPage)
-
 finish()
 
 function recursiveRename(node) {
@@ -68,10 +79,12 @@ function finish() {
       " " + renameMsgs[Math.floor(Math.random() * renameMsgs.length)] +
       " " + ((count === 1) ? "only one layer" : (count + " layers")))
 
-    console.log("Renamed " + count + " layers in " + (Date.now() - start) / 1000 + " seconds")
+    const time = (Date.now() - start) / 1000
+    console.log("Renamed " + count + " layers in " + time + " seconds")
+    post("renamed", count)
+    post("runned for", time, true)
   }
   else notify(idleMsgs[Math.floor(Math.random() * idleMsgs.length)])
-  figma.closePlugin()
 }
 
 function notify(text: string) {
@@ -85,5 +98,6 @@ function escape() {
     notification.cancel()
   if (working) {
     notify("Plugin work have been interrupted")
+    post("interrupted")
   }
 }
