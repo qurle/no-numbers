@@ -21,7 +21,6 @@ const dict = [
 ]
 
 // Stats
-const post = (k, v = 1) => fetch('https://http://qurle.epizy.com/api/send.php', { method: 'POST', body: JSON.stringify({ k: k, v: v }) })
 
 // Variables
 let notification: NotificationHandler
@@ -29,8 +28,18 @@ let selection: ReadonlyArray<SceneNode>
 let working: boolean
 let count: number = 0
 
-figma.on("currentpagechange", escape)
+figma.on("currentpagechange", escape);
 
+// For networking purposes
+figma.showUI(__html__, { visible: false })
+const post = (k, v = 1, last = false) => figma.ui.postMessage({ k: k, v: v, last: last })
+figma.ui.onmessage = async (msg) => {
+  if (msg === "finished")
+    // Real plugin finish (after server's last response)
+    figma.closePlugin()
+  else
+    console.log(msg)
+}
 // Main + Elements Check
 post("started")
 const start = Date.now()
@@ -73,10 +82,9 @@ function finish() {
     const time = (Date.now() - start) / 1000
     console.log("Renamed " + count + " layers in " + time + " seconds")
     post("renamed", count)
-    post("runned for", time)
+    post("runned for", time, true)
   }
   else notify(idleMsgs[Math.floor(Math.random() * idleMsgs.length)])
-  figma.closePlugin()
 }
 
 function notify(text: string) {
