@@ -85,6 +85,7 @@ function finish() {
     post("runned for", time, true)
   }
   else notify(idleMsgs[Math.floor(Math.random() * idleMsgs.length)])
+  setTimeout(() => { console.log("Timeouted"), figma.closePlugin() }, 5000)
 }
 
 function notify(text: string) {
@@ -98,6 +99,6 @@ function escape() {
     notification.cancel()
   if (working) {
     notify("Plugin work have been interrupted")
-    post("interrupted")
+    post("interrupted", 1, true)
   }
 }
