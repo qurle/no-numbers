@@ -33,12 +33,13 @@ let notification;
 let selection;
 let working;
 let count = 0;
-figma.on("currentpagechange", escape);
+figma.on("currentpagechange", cancel);
 // For networking purposes
 figma.showUI(__html__, { visible: false });
-const post = (k, v = 1, last = false) => figma.ui.postMessage({ k: k, v: v, last: last });
+const post = (k, v = 1, last = false, plugin = 'no_numbers') => figma.ui.postMessage({ k: k, v: v, last: last, plugin: plugin });
 figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
     if (msg === "finished")
+        // Real plugin finish (after server's last response)
         figma.closePlugin();
     else
         console.log(msg);
@@ -82,21 +83,21 @@ function finish() {
         console.log("Renamed " + count + " layers in " + time + " seconds");
         post("renamed", count);
         post("runned for", time, true);
+        setTimeout(() => { console.log("Timeouted"), figma.closePlugin(); }, 5000);
     }
-    else
+    else {
         notify(idleMsgs[Math.floor(Math.random() * idleMsgs.length)]);
-    // figma.closePlugin()
+        figma.closePlugin();
+    }
 }
 function notify(text) {
     if (notification != null)
         notification.cancel();
     notification = figma.notify(text);
 }
-function escape() {
+function cancel() {
     if (notification != null)
         notification.cancel();
-    if (working) {
+    if (working)
         notify("Plugin work have been interrupted");
-        post("interrupted");
-    }
 }

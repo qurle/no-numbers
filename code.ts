@@ -28,11 +28,11 @@ let selection: ReadonlyArray<SceneNode>
 let working: boolean
 let count: number = 0
 
-figma.on("currentpagechange", escape);
+figma.on("currentpagechange", cancel);
 
 // For networking purposes
 figma.showUI(__html__, { visible: false })
-const post = (k, v = 1, last = false) => figma.ui.postMessage({ k: k, v: v, last: last })
+const post = (k, v = 1, last = false, plugin = 'no_numbers') => figma.ui.postMessage({ k: k, v: v, last: last, plugin: plugin })
 figma.ui.onmessage = async (msg) => {
   if (msg === "finished")
     // Real plugin finish (after server's last response)
@@ -83,9 +83,12 @@ function finish() {
     console.log("Renamed " + count + " layers in " + time + " seconds")
     post("renamed", count)
     post("runned for", time, true)
+    setTimeout(() => { console.log("Timeouted"), figma.closePlugin() }, 5000)
   }
-  else notify(idleMsgs[Math.floor(Math.random() * idleMsgs.length)])
-  setTimeout(() => { console.log("Timeouted"), figma.closePlugin() }, 5000)
+  else {
+    notify(idleMsgs[Math.floor(Math.random() * idleMsgs.length)])
+    figma.closePlugin()
+  }
 }
 
 function notify(text: string) {
@@ -94,11 +97,9 @@ function notify(text: string) {
   notification = figma.notify(text)
 }
 
-function escape() {
+function cancel() {
   if (notification != null)
     notification.cancel()
-  if (working) {
+  if (working)
     notify("Plugin work have been interrupted")
-    post("interrupted", 1, true)
-  }
 }
