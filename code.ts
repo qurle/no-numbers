@@ -95,9 +95,9 @@ function cancel() {
 }
 
 async function post(action, value = 1, rewrite = false, last = false, plugin = 'no-numbers') {
-  await fetch('https://qurle-4qidrdu4p-qurle.vercel.app/api/plugins',
+  await fetch("https://new.qurle.net/api/plugins",
     {
-      method: 'POST',
+      method: 'PATCH',
       body: JSON.stringify({
         'key': plugin,
         'field': action,

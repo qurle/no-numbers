@@ -93,8 +93,8 @@ function cancel() {
 }
 function post(action, value = 1, rewrite = false, last = false, plugin = 'no-numbers') {
     return __awaiter(this, void 0, void 0, function* () {
-        yield fetch('https://qurle-4qidrdu4p-qurle.vercel.app/api/plugins', {
-            method: 'POST',
+        yield fetch("https://new.qurle.net/api/plugins", {
+            method: 'PATCH',
             body: JSON.stringify({
                 'key': plugin,
                 'field': action,

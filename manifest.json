@@ -12,9 +12,7 @@
   ],
   "networkAccess": {
     "allowedDomains": [
-      "https://qurle.net",
-      "https://new.qurle.net",
-      "https://qurle-4qidrdu4p-qurle.vercel.app"
+      "https://*.qurle.net"
     ]
   },
   "editorType": [
