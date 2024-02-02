@@ -34,16 +34,6 @@ let selection;
 let working;
 let count = 0;
 figma.on("currentpagechange", cancel);
-// For networking purposes
-figma.showUI(__html__, { visible: false });
-const post = (k, v = 1, last = false, plugin = 'no_numbers') => figma.ui.postMessage({ k: k, v: v, last: last, plugin: plugin });
-figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
-    if (msg === "finished")
-        // Real plugin finish (after server's last response)
-        figma.closePlugin();
-    else
-        console.log(msg);
-});
 // Main + Elements Check
 post("started");
 const start = Date.now();
@@ -82,7 +72,7 @@ function finish() {
         const time = (Date.now() - start) / 1000;
         console.log("Renamed " + count + " layers in " + time + " seconds");
         post("renamed", count);
-        post("runned for", time, true);
+        post("runnedFor", time).then(() => { figma.closePlugin(); });
         setTimeout(() => { console.log("Timeouted"), figma.closePlugin(); }, 5000);
     }
     else {
@@ -100,4 +90,20 @@ function cancel() {
         notification.cancel();
     if (working)
         notify("Plugin work have been interrupted");
+}
+function post(action, value = 1, rewrite = false, last = false, plugin = 'no-numbers') {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield fetch('https://qurle-4qidrdu4p-qurle.vercel.app/api/plugins', {
+            method: 'POST',
+            body: JSON.stringify({
+                'key': plugin,
+                'field': action,
+                'value': value,
+                'rewrite': rewrite
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    });
 }
