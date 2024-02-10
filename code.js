@@ -72,7 +72,7 @@ function finish() {
         const time = (Date.now() - start) / 1000;
         console.log("Renamed " + count + " layers in " + time + " seconds");
         post("renamed", count);
-        post("runnedFor", time).then(() => { figma.closePlugin(); });
+        post("runned-for", time).then(() => { figma.closePlugin(); });
         setTimeout(() => { console.log("Timeouted"), figma.closePlugin(); }, 5000);
     }
     else {
@@ -91,7 +91,7 @@ function cancel() {
     if (working)
         notify("Plugin work have been interrupted");
 }
-function post(action, value = 1, rewrite = false, last = false, plugin = 'no-numbers') {
+function post(action, value = 1, rewrite = false, plugin = 'no-numbers') {
     return __awaiter(this, void 0, void 0, function* () {
         yield fetch("https://new.qurle.net/api/plugins", {
             method: 'PATCH',
