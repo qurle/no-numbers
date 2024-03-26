@@ -1,6 +1,6 @@
 {
-  "name": "No-Numbers",
-  "version": "1.0.0",
+  "name": "no-numbers",
+  "version": "1.1.0",
   "description": "Make it just rectangle",
   "main": "code.js",
   "scripts": {
@@ -9,6 +9,6 @@
   "author": "Nick Qurle",
   "license": "",
   "devDependencies": {
-    "@figma/plugin-typings": "^1.33.0"
+    "@figma/plugin-typings": "*"
   }
 }
