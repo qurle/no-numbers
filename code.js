@@ -12,21 +12,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const confirmMsgs = ["Done!", "You got it!", "Aye!", "Is that all?", "My job here is done.", "Gotcha!", "It wasn't hard.", "Got it! What's next?"];
 const renameMsgs = ["Renamed", "Affected", "Made it with", "No numbered", "Cleared"];
 const idleMsgs = ["No numbers, already", "I see no layers with numbers", "Any default numbers? I can't see it", "Nothing to do, your layers are great"];
-const regex = /^\D\w+(?= \d+)/g;
-// Affected layers
-const dict = [
-    "Frame",
-    "Group",
-    "Slice",
-    "Rectangle",
-    "Line",
-    "Arrow",
-    "Ellipse",
-    "Polygon",
-    "Star",
-    "Vector",
-    "Component"
-];
+const regex = /^(Frame|Group|Slice|Rectangle|Line|Arrow|Ellipse|Polygon|Star|Vector|Component) \d+$/i;
 // Stats
 // Variables
 let notification;
@@ -48,11 +34,10 @@ else
 finish();
 function recursiveRename(node) {
     if (node.type !== "PAGE") {
-        const match = node.name.match(regex);
-        const index = (match && match.length > 0) ? dict.indexOf(match[0]) : -1;
-        if (index >= 0) {
+        if (regex.test(node.name)) {
+            // Replace the number and the preceding space with an empty string
             count++;
-            node.name = dict[index];
+            node.name = node.name.replace(/ \d+$/i, '');
         }
     }
     if ("children" in node) {
@@ -91,8 +76,8 @@ function cancel() {
     if (working)
         notify("Plugin work have been interrupted");
 }
-function post(action, value = 1, rewrite = false, plugin = 'no-numbers') {
-    return __awaiter(this, void 0, void 0, function* () {
+function post(action_1) {
+    return __awaiter(this, arguments, void 0, function* (action, value = 1, rewrite = false, plugin = 'no-numbers') {
         yield fetch("https://new.qurle.net/api/plugins", {
             method: 'PATCH',
             body: JSON.stringify({

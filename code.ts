@@ -4,21 +4,7 @@
 const confirmMsgs = ["Done!", "You got it!", "Aye!", "Is that all?", "My job here is done.", "Gotcha!", "It wasn't hard.", "Got it! What's next?"]
 const renameMsgs = ["Renamed", "Affected", "Made it with", "No numbered", "Cleared"]
 const idleMsgs = ["No numbers, already", "I see no layers with numbers", "Any default numbers? I can't see it", "Nothing to do, your layers are great"]
-const regex = /^\D\w+(?= \d+)/g
-// Affected layers
-const dict = [
-  "Frame",
-  "Group",
-  "Slice",
-  "Rectangle",
-  "Line",
-  "Arrow",
-  "Ellipse",
-  "Polygon",
-  "Star",
-  "Vector",
-  "Component"
-]
+const regex = /^(Frame|Group|Slice|Rectangle|Line|Arrow|Ellipse|Polygon|Star|Vector|Component) \d+$/i;
 
 // Stats
 
@@ -46,11 +32,10 @@ finish()
 
 function recursiveRename(node) {
   if (node.type !== "PAGE") {
-    const match = node.name.match(regex)
-    const index = (match && match.length > 0) ? dict.indexOf(match[0]) : -1
-    if (index >= 0) {
+    if (regex.test(node.name)) {
+      // Replace the number and the preceding space with an empty string
       count++
-      node.name = dict[index]
+      node.name = node.name.replace(/ \d+$/i, '');
     }
   }
   if ("children" in node) {
