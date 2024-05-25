@@ -28,6 +28,7 @@ const dict = [
     "Component"
 ];
 // Stats
+const sendStats = false;
 // Variables
 let notification;
 let selection;
@@ -93,6 +94,8 @@ function cancel() {
 }
 function post(action, value = 1, rewrite = false, plugin = 'no-numbers') {
     return __awaiter(this, void 0, void 0, function* () {
+        if (!sendStats)
+            return;
         yield fetch("https://new.qurle.net/api/plugins", {
             method: 'PATCH',
             body: JSON.stringify({
