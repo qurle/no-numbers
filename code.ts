@@ -21,6 +21,7 @@ const dict = [
 ]
 
 // Stats
+const sendStats = false
 
 // Variables
 let notification: NotificationHandler
@@ -95,6 +96,8 @@ function cancel() {
 }
 
 async function post(action, value = 1, rewrite = false, plugin = 'no-numbers') {
+  if (!sendStats) return
+
   await fetch("https://new.qurle.net/api/plugins",
     {
       method: 'PATCH',
