@@ -25,7 +25,9 @@ const dict = [
     "Polygon",
     "Star",
     "Vector",
-    "Component"
+    "Component",
+    "Section",
+    "image",
 ];
 // Stats
 const sendStats = false;
