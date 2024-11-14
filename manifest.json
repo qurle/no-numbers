@@ -12,7 +12,7 @@
   ],
   "networkAccess": {
     "allowedDomains": [
-      "https://*.qurle.net"
+      "none"
     ]
   },
   "editorType": [
